@@ -1,0 +1,15 @@
+{
+  "server": {
+    "port": 3000,
+    "host": "http://localhost"
+  },
+  "database": {
+    "client": "pg",
+    "connection": {
+      "host": "localhost",
+      "user": "postgres",
+      "password": "admin",
+      "database": "ecom"
+    }
+  }
+}
