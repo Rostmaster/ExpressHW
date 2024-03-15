@@ -1,23 +1,20 @@
-import knex from 'knex';
-import express from 'express';
-import cors from 'cors';
-import bodyParser from 'body-parser';
-import path from 'path';
-import config from 'config'
-const __dirname = import.meta.dirname;
-
-import logger from './logger/logger.js';
-
-const port  = config.server.port;
+const express = require('express');
+const cors = require('cors');
+const bodyParser = require('body-parser');
+const path = require('path');
+const config = require('config')
 const app = express();
 
+const logger = require('./logger/logger.js');
+const studentsRouter = require('./routers/students.js')
+
+const port = config.server.port;
+
+app.use(studentsRouter);
 app.use(cors());
 app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, '/static/')));
-
+app.use(express.static(path.join('.', '/static/'))) 
 app.listen(port, () => {
     console.clear();
     logger.info(`Server started on port ${port}`)
 })
-
-const data_base = knex(config.database)
