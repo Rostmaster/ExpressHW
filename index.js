@@ -4,6 +4,7 @@ import cors from 'cors';
 import bodyParser from 'body-parser';
 import path from 'path';
 import config from 'config'
+const __dirname = import.meta.dirname;
 
 import logger from './logger/logger.js';
 
