@@ -1,0 +1,114 @@
+doctype html 
+head 
+    title Students
+    link(rel="shortcut icon" href="#" type="image/x-icon")
+body
+    include templates/header.pug
+
+    h2 Students of the campus: 
+
+    table( id="studentsTable" )
+        thead 
+            tr 
+                th ID 
+                th Name 
+                th City
+                th Born in
+                th Link
+                th Options
+        tbody 
+            each student in students
+                tr(id=`row-${student.id}`)
+                    td= student.id
+                    td= student.name
+                    td= student.city
+                    td= student['birth_year']
+                    td
+                        a(href=`http://localhost:3000/api/students/${student.id}`) to page
+                    td
+                        button(id=`editBtn-${student.id}`) E
+                        button(id=`deleteBtn-${student.id}`) D 
+            tr 
+                td
+                td 
+                    input(type="text" placeholder='Name' id='newName')
+                td
+                    input(type="text" placeholder='City' id='newCity')
+                td
+                    input(type="number" placeholder='Birth Year' id='newBirthYear')
+                td  ----------
+                td 
+                    button(id="addBtn") Add
+
+
+
+script.
+    const table = document.getElementById('studentsTable');
+
+    let del = async (id) =>{
+        await fetch(`http://localhost:3000/api/students/${id}`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            }
+        })
+        window.location = ('http://localhost:3000/api/students/');
+    }
+    let add = async  () =>{
+        const name = document.getElementById('newName').value;
+        const city = document.getElementById('newCity').value;
+        const birth_year = document.getElementById('newBirthYear').value;
+        await fetch(`http://localhost:3000/api/students`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({name,city,birth_year})
+        })
+            window.location = ('http://localhost:3000/api/students/');
+
+    }
+    let edit = async (id) =>{}
+    let save = async () =>{}
+    let cancel = async () =>{}
+
+    table.addEventListener('click', (event) => {
+    const isButton = event.target.nodeName === 'BUTTON';
+    if (!isButton) {
+        return;
+    }
+    let id = event.target.id
+    console.dir(id);
+    if(id.startsWith('editBtn')) edit(id.split('-')[1])
+    if(id.startsWith('deleteBtn'))  del(id.split('-')[1])
+    if(id.startsWith('saveBtn')) save()
+    if(id.startsWith('cancelBtn')) cancel()
+    if(id.startsWith('addBtn')) add() 
+    })
+
+
+style(type="text/css").
+    table {
+        border-collapse: collapse;
+        border: 1px solid #ddd;
+    }
+    thead{
+        background-color: #4CAF50;
+        color: white;
+    }
+    th, td {
+        text-align: left;
+        padding: 8px 10px;
+        border: 1px solid #ddd;
+    }
+    tr td:nth-child(6){
+        width:auto;
+        display:flex;
+        justify-content: space-around;
+    }
+    a{
+        text-decoration: none;
+        color: black;
+    }

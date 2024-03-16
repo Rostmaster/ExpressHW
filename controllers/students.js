@@ -14,7 +14,7 @@ module.exports = {
                 e.city = e.city.trimEnd();
                 return e;
             })
-            res.status(200).json(students.rows)
+            res.status(200).render('students', { title: 'Students:', students: students.rows })
         }
         catch (error) {
             logger.error(error.message)
@@ -32,12 +32,14 @@ module.exports = {
                 return e;
             })
             logger.info(`student '${JSON.stringify(student.rows)}' found`)
-            res.status(200).json(student.rows)
+            res.status(200)
+            .render('student', { title: 'Result:', student:student.rows[0] });
         }
         catch (error) {
             const id = req.params.studentId
             logger.error(error.message)
-            res.status(404).json({ error: error.message })
+            res.status(404)
+            .render('404', { title: 'Not found', message: `Seems like student ${id} not found` });
         }
     },
     createStudent: async (req, res) => {

@@ -13,7 +13,14 @@ const port = config.server.port;
 app.use(cors());
 app.use(bodyParser.json());
 app.use(studentsRouter);
+app.set('view engine', 'pug');
+app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join('.', '/static/'))) 
+
+app.get("/", (req, res) => {
+    res.render("homepage");
+});
+
 app.listen(port, () => {
     console.clear();
     logger.info(`Server started on port ${port}`)

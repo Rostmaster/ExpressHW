@@ -1,0 +1,6 @@
+#header{
+    color: green;
+    display: flex;
+    align-items: start;
+    gap: 50px;
+}
