@@ -9,6 +9,8 @@ router.post("/api/students", studentController.createStudent);
 router.post("/api/create-students-table", studentController.createStudentsTable);
 router.post("/api/init-students-table", studentController.initStudentsTable);
 router.put("/api/students/:studentId", studentController.updateStudent);
+router.patch("/api/students/:studentId", studentController.updateStudent);
 router.delete("/api/students/:studentId", studentController.deleteStudent);
+router.delete("/api/delete-students-table", studentController.deleteStudentsTable);
 
 module.exports = router

@@ -10,9 +10,9 @@ const studentsRouter = require('./routers/students.js')
 
 const port = config.server.port;
 
-app.use(studentsRouter);
 app.use(cors());
 app.use(bodyParser.json());
+app.use(studentsRouter);
 app.use(express.static(path.join('.', '/static/'))) 
 app.listen(port, () => {
     console.clear();
