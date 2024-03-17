@@ -1,0 +1,81 @@
+doctype html 
+head 
+    title= title
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js")
+    link(rel="shortcut icon" href="#" type="image/x-icon")
+body
+    include templates/header.pug
+
+    #wrapper
+        #students 
+            h1 Students table
+            hr
+            button(id='studentsTCreateBtn') Create table
+            button(id='studentsTInitBtn') Initialize table
+            button(id='studentsTCDeleteBtn') Delete table
+        #grades 
+            h1 Grades table 
+            hr
+            button(id='gradesTCreateBtn') Create table
+            button(id='gradesTInitBtn') Initialize table
+            button(id='gradesTCDeleteBtn') Delete table
+
+script.
+    let wrapper = document.getElementById('wrapper')
+    let createTable = async(tableName) =>{
+        await fetch(`http://localhost:3000/api/tables-create/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({tableName:tableName})
+        })
+    }
+
+    let initTable = async(tableName) =>{
+        await fetch(`http://localhost:3000/api/tables-init/`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({tableName:tableName})
+        })
+    }
+    let deleteTable = async(tableName) =>{
+        await fetch(`http://localhost:3000/api/tables-delete/`, {
+            method: 'DELETE',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({tableName:tableName})
+        })
+    } 
+
+    wrapper.addEventListener('click', (event) => {
+        const isButton = event.target.nodeName === 'BUTTON';
+        if (!isButton) return;
+        let id = event.target.id
+        if(id.endsWith('CreateBtn')) createTable(id.split('T')[0])
+        if(id.endsWith('InitBtn'))  initTable(id.split('T')[0])
+        if(id.endsWith('DeleteBtn')) deleteTable(id.split('T')[0])
+    })
+
+style.
+    .wrapper{
+        margin-top:50px;
+        width: 100%;
+        height: auto;
+        display: flex;
+        flex-direction:column;
+        align-items: flex-start;
+    }
+
+    button{
+        margin: 10px;
+        padding: 10px;
+    }
+
+

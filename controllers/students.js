@@ -6,15 +6,16 @@ const data_base = knex(config.database)
 
 
 module.exports = {
-
+    id:'students',
+    //?===========Students=============
     getStudents: async (req, res) => {
         try {
-            const students = await data_base.raw(`select * from students`)
+            const students = await data_base.raw(`select * from students order by id asc`)
             students.rows = students.rows.map(e => {
                 e.city = e.city.trimEnd();
                 return e;
             })
-            res.status(200).render('students', { title: 'Students:', students: students.rows })
+            res.status(200).render('students', { title: 'Students:', students: students.rows})
         }
         catch (error) {
             logger.error(error.message)
@@ -91,6 +92,7 @@ module.exports = {
                 e.city = e.city.trimEnd();
                 return e;
             })
+
             logger.info(`student '${JSON.stringify(student.rows)}' deleted`)
             res.status(200).json({ status: `Student ${id} deleted` })
         }
@@ -100,7 +102,19 @@ module.exports = {
             res.status(400).json({ error: `student '${id}' not deleted` })
         }
     },
-    createStudentsTable: async (req, res) => {
+
+    //?==============Table=============
+    getTable: async (req, res) => {
+        try {
+            logger.info(`Table tools opened`)
+            res.status(200)
+            .render('tableTools', { title: 'Table tools' });
+        } catch (error) {
+            logger.error(`${req.method} to ${req.url} |: ${error.message}`)
+            res.status(400).json({ status: "already exists" })
+        }
+    },
+    createTable: async (req, res) => {
         try {
             await data_base.raw(
                 `CREATE TABLE students (` +
@@ -115,7 +129,7 @@ module.exports = {
             res.status(400).json({ status: "already exists" })
         }
     },
-    initStudentsTable: async (req, res) => {
+    initTable: async (req, res) => {
         try {
             logger.info(` initializing students table...`)
             await data_base.raw(`${data_base('students').insert({ name: 'Johnathan', city: 'Ohio', birth_year: 1990 })}`)
@@ -132,7 +146,7 @@ module.exports = {
             res.status(400).json({ status: "Students table was not initialized" })
         }
     },
-    deleteStudentsTable: async (req, res) => {
+    deleteTable: async (req, res) => {
         try {
             logger.info(` deleting students table...`)
             await data_base.raw(`DROP TABLE IF EXISTS students;`)
@@ -144,4 +158,5 @@ module.exports = {
             res.status(500).json({ status: "Students table was not deleted" })
         }
     }
+
 }

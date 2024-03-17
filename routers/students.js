@@ -12,8 +12,9 @@ router.patch("/api/students/:studentId", studentController.updateStudent);
 router.delete("/api/students/:studentId", studentController.deleteStudent);
 
 //Table
-router.post("/api/students/create-table", studentController.createStudentsTable);
-router.post("/api/students/init-table", studentController.initStudentsTable);
-router.delete("/api/students/delete-table", studentController.deleteStudentsTable);
+// router.get("/api/students-table", studentController.getTable);
+router.post("/api/students-table-create", studentController.createTable);
+router.post("/api/students-table-init", studentController.initTable);
+router.delete("/api/students-table-delete", studentController.deleteTable);
 
 module.exports = router

@@ -1,0 +1,156 @@
+doctype html 
+head 
+    title Grades
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js")
+    link(rel="shortcut icon" href="#" type="image/x-icon")
+body
+    include templates/header.pug
+
+//-     h2 Students of the campus: 
+
+//-     table( id="studentsTable" )
+//-         thead 
+//-             tr 
+//-                 th ID 
+//-                 th Name 
+//-                 th City
+//-                 th Born in
+//-                 th Link
+//-                 th Options
+//-         tbody 
+//-             each student in students
+//-                 tr(id=`row-${student.id}`)
+//-                     td= student.id
+//-                     td= student.name
+//-                     td= student.city
+//-                     td= student['birth_year']
+//-                     td
+//-                         a(href=`http://localhost:3000/api/students/${student.id}`) to page
+//-                     td
+//-                         button(id=`editBtn-${student.id}`) E
+//-                         button(id=`deleteBtn-${student.id}`) D 
+//-             tr(id="addRow") 
+//-                 td
+//-                 td 
+//-                     input(type="text" placeholder='Name' id='newName')
+//-                 td
+//-                     input(type="text" placeholder='City' id='newCity')
+//-                 td
+//-                     input(type="number" placeholder='Birth Year' id='newBirthYear')
+//-                 td  ----------
+//-                 td 
+//-                     button(id="addBtn") Add
+
+
+
+//- script.
+//-     const table = document.getElementById('studentsTable');
+
+//-     let del = async (id) =>{
+//-         await fetch(`http://localhost:3000/api/students/${id}`, {
+//-             method: 'DELETE',
+//-             headers: {
+//-                 'Content-Type': 'application/json',
+//-                 'Accept': 'application/json'
+//-             }
+//-         })
+//-         window.location = ('http://localhost:3000/api/students/');
+//-     }
+
+//-     let add = async  () =>{
+//-         const name = $('#newName').val();
+//-         const city = $('#newCity').val();
+//-         const birth_year = $('#newBirthYear').val();
+//-         await fetch(`http://localhost:3000/api/students`, {
+//-             method: 'POST',
+//-             headers: {
+//-                 'Content-Type': 'application/json',
+//-                 'Accept': 'application/json'
+//-             },
+//-             body: JSON.stringify({name,city,birth_year})
+//-         })
+//-             window.location = ('http://localhost:3000/api/students/');
+//-     }
+
+//-     let edit = async (id) =>{
+//-         $('#addRow').hide()
+//-         let row = $(`#row-${id}`)
+//-         let name = row.find("td:eq(1)").text(); 
+//-         let city = row.find("td:eq(2)").text(); 
+//-         let birthYear = row.find("td:eq(3)").text();
+
+//-         let idCell = $(`<td id="editId">${id}</td>`)
+//-         let nameCell = $(`<td><input type="text" value="${name}" id="editName"></td>`)
+//-         let cityCell = $(`<td><input type="text" value="${city}" id="editCity"></td>`)
+//-         let birthYearCell = $(`<td><input type="number" value="${birthYear}" id="editBirthYear"></td>`)
+//-         let linkCell = $(`<td> ---------- </td>`)
+//-         let optionsCell = $(`<td><button id="saveBtn-${id}">S</button><button id="cancelBtn">C</button></td>`)
+
+//-         row.find("td:eq(1)").replaceWith(idCell)
+//-         row.find("td:eq(1)").replaceWith(nameCell)
+//-         row.find("td:eq(2)").replaceWith(cityCell)
+//-         row.find("td:eq(3)").replaceWith(birthYearCell)
+//-         row.find("td:eq(4)").replaceWith(linkCell)
+//-         row.find("td:eq(5)").replaceWith(optionsCell)
+//-     }
+
+//-     let save = async (id) =>{
+//-         console.log('save:',id)
+//-         const name = $('#editName').val();
+//-         const city = $('#editCity').val();
+//-         const birth_year = $('#editBirthYear').val();
+//-         console.log(`${id}, ${name}, ${city}, ${birth_year}`)
+
+//-         await fetch(`http://localhost:3000/api/students/${id}`, {
+//-             method: 'PUT',
+//-             headers: {
+//-                 'Content-Type': 'application/json',
+//-                 'Accept': 'application/json'
+//-             },
+//-             body: JSON.stringify({name,city,birth_year})
+//-         })
+//-         window.location = ('http://localhost:3000/api/students/');
+
+//-     }
+//-     let cancel = async () =>{
+//-         window.location.reload();
+//-     }
+
+//-     table.addEventListener('click', (event) => {
+//-     const isButton = event.target.nodeName === 'BUTTON';
+//-     if (!isButton) {
+//-         return;
+//-     }
+//-     let id = event.target.id
+//-     console.dir(id);
+//-     if(id.startsWith('editBtn')) edit(id.split('-')[1])
+//-     if(id.startsWith('deleteBtn'))  del(id.split('-')[1])
+//-     if(id.startsWith('saveBtn')) save(id.split('-')[1])
+//-     if(id.startsWith('cancelBtn')) cancel()
+//-     if(id.startsWith('addBtn')) add() 
+//-     })
+
+
+//- style(type="text/css").
+//-     table {
+//-         border-collapse: collapse;
+//-         border: 1px solid #ddd;
+//-     }
+//-     thead{
+//-         background-color: #4CAF50;
+//-         color: white;
+//-     }
+//-     th, td {
+//-         text-align: left;
+//-         padding: 8px 10px;
+//-         border: 1px solid #ddd;
+//-     }
+//-     tr td:nth-child(6){
+//-         width:auto;
+//-         display:flex;
+//-         justify-content: space-around;
+//-     }
+//-     a{
+//-         text-decoration: none;
+//-         color: black;
+//-     }

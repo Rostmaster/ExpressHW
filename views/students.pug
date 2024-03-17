@@ -1,6 +1,7 @@
 doctype html 
 head 
     title Students
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js")
     link(rel="shortcut icon" href="#" type="image/x-icon")
 body
     include templates/header.pug
@@ -28,7 +29,7 @@ body
                     td
                         button(id=`editBtn-${student.id}`) E
                         button(id=`deleteBtn-${student.id}`) D 
-            tr 
+            tr(id="addRow") 
                 td
                 td 
                     input(type="text" placeholder='Name' id='newName')
@@ -55,10 +56,11 @@ script.
         })
         window.location = ('http://localhost:3000/api/students/');
     }
+
     let add = async  () =>{
-        const name = document.getElementById('newName').value;
-        const city = document.getElementById('newCity').value;
-        const birth_year = document.getElementById('newBirthYear').value;
+        const name = $('#newName').val();
+        const city = $('#newCity').val();
+        const birth_year = $('#newBirthYear').val();
         await fetch(`http://localhost:3000/api/students`, {
             method: 'POST',
             headers: {
@@ -68,11 +70,51 @@ script.
             body: JSON.stringify({name,city,birth_year})
         })
             window.location = ('http://localhost:3000/api/students/');
+    }
+
+    let edit = async (id) =>{
+        $('#addRow').hide()
+        let row = $(`#row-${id}`)
+        let name = row.find("td:eq(1)").text(); 
+        let city = row.find("td:eq(2)").text(); 
+        let birthYear = row.find("td:eq(3)").text();
+
+        let idCell = $(`<td id="editId">${id}</td>`)
+        let nameCell = $(`<td><input type="text" value="${name}" id="editName"></td>`)
+        let cityCell = $(`<td><input type="text" value="${city}" id="editCity"></td>`)
+        let birthYearCell = $(`<td><input type="number" value="${birthYear}" id="editBirthYear"></td>`)
+        let linkCell = $(`<td> ---------- </td>`)
+        let optionsCell = $(`<td><button id="saveBtn-${id}">S</button><button id="cancelBtn">C</button></td>`)
+
+        row.find("td:eq(1)").replaceWith(idCell)
+        row.find("td:eq(1)").replaceWith(nameCell)
+        row.find("td:eq(2)").replaceWith(cityCell)
+        row.find("td:eq(3)").replaceWith(birthYearCell)
+        row.find("td:eq(4)").replaceWith(linkCell)
+        row.find("td:eq(5)").replaceWith(optionsCell)
+    }
+
+    let save = async (id) =>{
+        console.log('save:',id)
+        const name = $('#editName').val();
+        const city = $('#editCity').val();
+        const birth_year = $('#editBirthYear').val();
+        console.log(`${id}, ${name}, ${city}, ${birth_year}`)
+
+        await fetch(`http://localhost:3000/api/students/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({name,city,birth_year})
+        })
+        window.location = ('http://localhost:3000/api/students/');
 
     }
-    let edit = async (id) =>{}
-    let save = async () =>{}
-    let cancel = async () =>{}
+    let cancel = async () =>{
+        window.location.reload();
+    }
 
     table.addEventListener('click', (event) => {
     const isButton = event.target.nodeName === 'BUTTON';
@@ -83,7 +125,7 @@ script.
     console.dir(id);
     if(id.startsWith('editBtn')) edit(id.split('-')[1])
     if(id.startsWith('deleteBtn'))  del(id.split('-')[1])
-    if(id.startsWith('saveBtn')) save()
+    if(id.startsWith('saveBtn')) save(id.split('-')[1])
     if(id.startsWith('cancelBtn')) cancel()
     if(id.startsWith('addBtn')) add() 
     })

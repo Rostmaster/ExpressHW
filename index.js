@@ -7,12 +7,16 @@ const app = express();
 
 const logger = require('./logger/logger.js');
 const studentsRouter = require('./routers/students.js')
+const gradesRouter = require('./routers/grades.js')
+const tableToolsRouter = require('./routers/tableTools.js')
 
 const port = config.server.port;
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(studentsRouter);
+app.use(gradesRouter);
+app.use(tableToolsRouter);
 app.set('view engine', 'pug');
 app.set("views", path.join(__dirname, "views"));
 app.use(express.static(path.join('.', '/static/'))) 

@@ -1,0 +1,9 @@
+html
+  head
+    title= title
+  body
+    include templates/header.pug
+
+    h1 Grade #{grade.grade} 
+    | For #{grade.subject},
+    | of student with ID  #{grade.student_id}
