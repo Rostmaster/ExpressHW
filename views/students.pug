@@ -25,10 +25,10 @@ body
                     td= student.city
                     td= student['birth_year']
                     td
-                        a(href=`http://localhost:3000/api/students/${student.id}`) to page
+                        a(href=`http://localhost:3000/api/students/${student.id}`) 🌐 to page
                     td
-                        button(id=`editBtn-${student.id}`) E
-                        button(id=`deleteBtn-${student.id}`) D 
+                        button(id=`editBtn-${student.id}`) 🖉
+                        button(id=`deleteBtn-${student.id}`) 🗑
             tr(id="addRow") 
                 td
                 td 
@@ -61,7 +61,7 @@ script.
         const name = $('#newName').val();
         const city = $('#newCity').val();
         const birth_year = $('#newBirthYear').val();
-        await fetch(`http://localhost:3000/api/students`, {
+        let newID = await fetch(`http://localhost:3000/api/students`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -69,7 +69,8 @@ script.
             },
             body: JSON.stringify({name,city,birth_year})
         })
-            window.location = ('http://localhost:3000/api/students/');
+        console.log(JSON.stringify(newID))
+            window.location = (`http://localhost:3000/api/students/`);
     }
 
     let edit = async (id) =>{
@@ -84,7 +85,7 @@ script.
         let cityCell = $(`<td><input type="text" value="${city}" id="editCity"></td>`)
         let birthYearCell = $(`<td><input type="number" value="${birthYear}" id="editBirthYear"></td>`)
         let linkCell = $(`<td> ---------- </td>`)
-        let optionsCell = $(`<td><button id="saveBtn-${id}">S</button><button id="cancelBtn">C</button></td>`)
+        let optionsCell = $(`<td><button id="saveBtn-${id}">✔️</button><button id="cancelBtn">❌</button></td>`)
 
         row.find("td:eq(1)").replaceWith(idCell)
         row.find("td:eq(1)").replaceWith(nameCell)
@@ -132,6 +133,8 @@ script.
 
 
 style(type="text/css").
+
+
     table {
         border-collapse: collapse;
         border: 1px solid #ddd;
