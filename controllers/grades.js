@@ -42,18 +42,65 @@ module.exports = {
                 .render('404', { title: 'Not found', message: `Seems like grade ${id} not found` });
         }
     },
-    
-    //TODO: START
     createGrade: async (req, res) => {
-
+        try {
+            const { student_id, grade, subject } = req.body
+            await data_base.raw(`${data_base('grades').insert({ student_id, grade, subject })}`)
+            logger.info(`student '${JSON.stringify(req.body)}' created`)
+            res.status(201).json({ status: "new student created" })
+        }
+        catch (error) {
+            logger.error(`${req.method} to ${req.url} |: ${error.message}`)
+            res.status(400).json({ error: req.body })
+        }
     },
     updateGrade: async (req, res) => {
-
+        try {
+            const id = req.params.gradeId
+            let Grade = await data_base.raw(`select * from grades where id = ${id}`)
+            Grade.rows = Grade.rows.map(e => {
+                e.subject = e.subject.trimEnd();
+                return e;
+            })
+            if (req.method === "PUT") {
+                const { student_id, subject, grade } = req.body
+                await data_base.raw(`${data_base('grades').where('id', id).update({ student_id, subject, grade })}`)
+                logger.info(`grade ${JSON.stringify(Grade.rows)} updated to '${JSON.stringify(req.body)}'`)
+                res.status(200).json({ status: `grade ${id} updated` })
+            }
+            if (req.method === "PATCH") {
+                for (const key in req.body) {
+                    await data_base('grade').where('id', id).update({ [key]: req.body[key] })
+                }
+                logger.info(`grade ${JSON.stringify(Grade.rows)} updated to '${JSON.stringify(req.body)}'`)
+                res.status(200).json({ status: `grade ${id} updated` })
+            }
+        }
+        catch (error) {
+            const id = req.params.gradeId
+            logger.error(`${req.method} to ${req.url} |: ${error.message}`)
+            res.status(404).json({ error: `grade '${id}' not updated` })
+        }
     },
     deleteGrade: async (req, res) => {
+        try {
+            const id = req.params.gradeId
+            let Grade = await data_base.raw(`select * from grades where id = ${id}`)
+            Grade.rows = Grade.rows.map(e => {
+                e.subject = e.subject.trimEnd();
+                return e;
+            })
+            console.log(await data_base.raw(`delete from grades where id = ${id}`))
 
+            logger.info(`grade '${JSON.stringify(Grade.rows)}' deleted`)
+            res.status(200).json({ status: `grade ${id} deleted` })
+        }
+        catch (error) {
+            const id = req.params.gradeId
+            logger.error(`${req.method} to ${req.url} |: ${error.message}`)
+            res.status(400).json({ error: `grade '${id}' not deleted` })
+        }
     },
-    //TODO: END
 
     //?==============Table=============
     createTable: async (req, res) => {
@@ -108,15 +155,4 @@ module.exports = {
         }
     },
 
-
-    // getTable: async (req, res) => {
-    //     try {
-    //         logger.info(`Table tools opened`)
-    //         res.status(200)
-    //         .render('tableTools', { title: 'Table tools' });
-    //     } catch (error) {
-    //         logger.error(`${req.method} to ${req.url} |: ${error.message}`)
-    //         res.status(400).json({ status: "already exists" })
-    //     }
-    // },
 }

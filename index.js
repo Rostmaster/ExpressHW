@@ -14,8 +14,8 @@ const port = config.server.port;
 
 app.use(cors());
 app.use(bodyParser.json());
-app.use(studentsRouter);
-app.use(gradesRouter);
+app.use('/api',studentsRouter);
+app.use('/api',gradesRouter);
 app.use(tableToolsRouter);
 app.set('view engine', 'pug');
 app.set("views", path.join(__dirname, "views"));

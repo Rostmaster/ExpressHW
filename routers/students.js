@@ -4,17 +4,17 @@ const studentController = require("../controllers/students.js")
 const router = new Router();
 
 //Students
-router.get("/api/students", studentController.getStudents);
-router.get("/api/students/:studentId", studentController.getStudent);
-router.post("/api/students", studentController.createStudent);
-router.put("/api/students/:studentId", studentController.updateStudent);
-router.patch("/api/students/:studentId", studentController.updateStudent);
-router.delete("/api/students/:studentId", studentController.deleteStudent);
+router.get("/students", studentController.getStudents);
+router.get("/students/:studentId", studentController.getStudent);
+router.post("/students", studentController.createStudent);
+router.put("/students/:studentId", studentController.updateStudent);
+router.patch("/students/:studentId", studentController.updateStudent);
+router.delete("/students/:studentId", studentController.deleteStudent);
 
 //Table
-// router.get("/api/students-table", studentController.getTable);
-router.post("/api/students-table-create", studentController.createTable);
-router.post("/api/students-table-init", studentController.initTable);
-router.delete("/api/students-table-delete", studentController.deleteTable);
+// router.get("/students-table", studentController.getTable);
+router.post("/students-table-create", studentController.createTable);
+router.post("/students-table-init", studentController.initTable);
+router.delete("/students-table-delete", studentController.deleteTable);
 
 module.exports = router

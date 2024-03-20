@@ -1,7 +1,6 @@
 const knex = require('knex')
 const logger = require('../logger/logger.js');
 const config = require('config')
-
 const data_base = knex(config.database)
 
 
@@ -87,17 +86,17 @@ module.exports = {
         try {
             const id = req.params.studentId
             let student = await data_base.raw(`select * from students where id = ${id}`)
-            await data_base.raw(`delete from students where id = ${id}`)
             student.rows = student.rows.map(e => {
                 e.city = e.city.trimEnd();
                 return e;
             })
+            await data_base.raw(`delete from students where id = ${id}`)
 
             logger.info(`student '${JSON.stringify(student.rows)}' deleted`)
             res.status(200).json({ status: `Student ${id} deleted` })
         }
         catch (error) {
-            const id = req.params.id
+            const id = req.params.studentId
             logger.error(`${req.method} to ${req.url} |: ${error.message}`)
             res.status(400).json({ error: `student '${id}' not deleted` })
         }
