@@ -27,8 +27,8 @@ body
                     td
                         a(href=`http://localhost:3000/api/grades/${grade.id}`) to page
                     td
-                        button(id=`editBtn-${grade.id}`) E
-                        button(id=`deleteBtn-${grade.id}`) D 
+                        button(id=`editBtn-${grade.id}`) 🖉
+                        button(id=`deleteBtn-${grade.id}`) 🗑
             tr(id="addRow") 
                 td
                 td 
@@ -84,7 +84,7 @@ script.
         let subjectCell = $(`<td><input type="text" value="${subject}" id="editSubject"></td>`)
         let gradeCell = $(`<td><input type="number" value="${grade}" id="editGrade"></td>`)
         let linkCell = $(`<td> ---------- </td>`)
-        let optionsCell = $(`<td><button id="saveBtn-${id}">S</button><button id="cancelBtn">C</button></td>`)
+        let optionsCell = $(`<td><button id="saveBtn-${id}">✔️</button><button id="cancelBtn">❌</button></td>`)
 
         row.find("td:eq(1)").replaceWith(idCell)
         row.find("td:eq(1)").replaceWith(studentIDCell)
